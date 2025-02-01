@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    ports:
+      - "1938:1938"
+    environment:
+      - PORT=1938
+    restart: unless-stopped 

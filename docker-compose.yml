@@ -2,9 +2,13 @@ version: '3.8'
 
 services:
   api:
-    build: .
+    build:
+      context: .
+      args:
+        - DATABASE_URL=${DATABASE_URL}
     ports:
       - "1938:1938"
     environment:
       - PORT=1938
+      - DATABASE_URL=${DATABASE_URL}
     restart: unless-stopped 

@@ -2,6 +2,10 @@ FROM node:18-alpine
 
 WORKDIR /app
 
+# Argumentos de build para variáveis de ambiente
+ARG DATABASE_URL
+ENV DATABASE_URL=${DATABASE_URL}
+
 # Copiar arquivos de dependências
 COPY package*.json ./
 

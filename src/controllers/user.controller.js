@@ -80,7 +80,7 @@ const getStudents = async (req, res) => {
         const students = await prisma.user.findMany({
             where: { role: "STUDENT" },
             include: {
-                payments: {
+                Payment: {
                     where: {
                         status: "PENDING"
                     }
@@ -90,8 +90,8 @@ const getStudents = async (req, res) => {
 
         const studentsWithPendingCount = students.map(student => ({
             ...student,
-            pendingPayments: student.payments.length,
-            payments: undefined // Remove o array de pagamentos da resposta
+            pendingPayments: student.Payment.length,
+            Payment: undefined // Remove o array de pagamentos da resposta
         }));
 
         res.json(studentsWithPendingCount);

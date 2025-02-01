@@ -136,11 +136,29 @@ const editUser = async (req, res) => {
     }
 }
 
+const deleteStudent = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const deletedUser = await prisma.user.delete({
+            where: { 
+                id: parseInt(id) 
+            }
+        });
+
+        res.json(deletedUser);
+    } catch (error) {
+        console.error("Erro ao deletar aluno:", error);
+        res.status(500).json({ error: "Erro ao deletar aluno" });
+    }
+}
+
 
 module.exports = {
     createUser,
     getStudents,
     getTeachers,
     editUser,
-    createTeacher
+    createTeacher,
+    deleteStudent
 }

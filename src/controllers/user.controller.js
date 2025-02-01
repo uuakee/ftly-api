@@ -32,7 +32,7 @@ const createUser = async (req, res) => {
             }
         });
 
-        res.status(201).json({ message: "Usuário criado com sucesso", user: newUser });
+        res.status(201).json({ message: "Usuário criado com sucesso", user: newUser, userId: newUser.id });
     } catch (error) {
         console.error("Erro ao registrar usuário:", error);
         res.status(500).json({ error: "Erro ao registrar usuário" });

@@ -78,9 +78,23 @@ const createTeacher = async (req, res) => {
 const getStudents = async (req, res) => {
     try {
         const students = await prisma.user.findMany({
-            where: { role: "STUDENT" }
+            where: { role: "STUDENT" },
+            include: {
+                payments: {
+                    where: {
+                        status: "PENDING"
+                    }
+                }
+            }
         });
-        res.json(students);
+
+        const studentsWithPendingCount = students.map(student => ({
+            ...student,
+            pendingPayments: student.payments.length,
+            payments: undefined // Remove o array de pagamentos da resposta
+        }));
+
+        res.json(studentsWithPendingCount);
     } catch (error) {
         console.error("Erro ao buscar alunos:", error);
         res.status(500).json({ error: "Erro ao buscar alunos" });

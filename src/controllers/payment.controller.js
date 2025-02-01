@@ -158,8 +158,47 @@ const getAllInstallments = async (req, res) => {
     }
 };
 
+const updatePaymentStatus = async (req, res) => {
+    try {
+        const { paymentId } = req.params;
+        const { status } = req.body;
+
+        // Validações básicas
+        if (!paymentId || !status) {
+            return res.status(400).json({
+                error: 'ID do pagamento e status são obrigatórios.'
+            });
+        }
+
+        // Verifica se o status é válido
+        if (status !== 'PAID' && status !== 'PENDING') {
+            return res.status(400).json({
+                error: 'Status inválido. Use PAID ou PENDING.'
+            });
+        }
+
+        // Atualiza o status do pagamento
+        const updatedPayment = await prisma.payment.update({
+            where: { id: parseInt(paymentId) },
+            data: { status }
+        });
+
+        return res.status(200).json({
+            message: 'Status do pagamento atualizado com sucesso',
+            payment: updatedPayment
+        });
+
+    } catch (error) {
+        console.error('Erro ao atualizar status do pagamento:', error);
+        return res.status(500).json({
+            error: 'Erro interno do servidor ao atualizar status do pagamento.'
+        });
+    }
+}
+
 module.exports = {
     createInstallments,
     getInstallmentsFromUser,
-    getAllInstallments
+    getAllInstallments,
+    updatePaymentStatus,
 }

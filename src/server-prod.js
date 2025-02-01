@@ -4,6 +4,7 @@ const authRoutes = require('./routes/auth.routes');
 const schoolRoutes = require('./routes/school.routes');
 const courseRoutes = require('./routes/course.routes');
 const paymentRoutes = require('./routes/payment.routes');
+const userRoutes = require('./routes/user.routes');
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/school', schoolRoutes);
 app.use('/api/course', courseRoutes)
 app.use('/api/payment', paymentRoutes)
+app.use('/api/user', userRoutes)
 
 const PORT = 1938;
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));

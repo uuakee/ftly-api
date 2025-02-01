@@ -1,0 +1,137 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// Modelo de usuário
+model User {
+  id       Int    @id @default(autoincrement())
+  name     String
+  email    String @unique
+  password String
+  adress   String
+  role     Role   @default(STUDENT)
+
+  // Relacionamentos
+  enrollments Enrollment[]
+  courses     Course[]     @relation("TeacherCourses")
+  Payment     Payment[]
+
+  // Campos padrões
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+// Modelo de matrícula
+model Enrollment {
+  id       Int @id @default(autoincrement())
+  userId   Int
+  courseId Int
+
+  // Relacionamentos
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  // Campos padrões
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Note      Note?
+
+  @@unique([userId, courseId])
+  @@map("enrollments")
+}
+
+// Modelo de curso
+model Course {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String?
+  teacherId   Int?
+
+  // Relacionamentos
+  teacher     User?        @relation(fields: [teacherId], references: [id], onDelete: SetNull, name: "TeacherCourses")
+  enrollments Enrollment[]
+
+  // Campos padrões
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  SchoolUnit   School?  @relation(fields: [schoolUnitId], references: [id])
+  schoolUnitId Int?
+
+  @@map("courses")
+}
+
+// Modelo de pagamento
+model Payment {
+  id     Int           @id @default(autoincrement())
+  userId Int
+  amount Float
+  status PaymentStatus @default(PENDING)
+
+  // Relacionamentos
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Campos padrões
+  createdAt DateTime @default(now())
+
+  @@map("payments")
+}
+
+model Note {
+  id           Int        @id @default(autoincrement())
+  enrollmentId Int        @unique
+  score        Float
+  status       NoteStatus @default(IN_PROGRESS)
+
+  // Relacionamento
+  enrollment Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+
+  // Campos padrões
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("notes")
+}
+
+// Modelo de unidade de escola
+model School {
+  id   Int     @id @default(autoincrement())
+  name String
+  desc String?
+
+  // Relacionamentos
+  courses Course[]
+
+  // Campos padrões
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("school_units")
+}
+
+// Enum de status da nota
+enum NoteStatus {
+  IN_PROGRESS
+  APPROVED
+  FAILED
+}
+
+// Enum de função do usuário
+enum Role {
+  ADMIN
+  TEACHER
+  STUDENT
+}
+
+// Enum de status de pagamento
+enum PaymentStatus {
+  PENDING
+  PAID
+  CANCELED
+}

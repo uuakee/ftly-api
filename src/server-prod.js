@@ -13,5 +13,5 @@ app.use('/api/auth', authRoutes);
 app.use('/api/school', schoolRoutes);
 app.use('/api/course', courseRoutes)
 
-const PORT = process.env.PORT || 3000;
+const PORT = 1938;
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));

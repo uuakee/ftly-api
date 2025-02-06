@@ -8,14 +8,20 @@ const createEnrollment = async (req, res) => {
     try {
         const { userId, courseId, schoolId } = req.body;
 
-        const enrollment = await prisma.enrollment.create({
-            data: {
-                userId: parseInt(userId, 10),
-                courseId: Array.isArray(courseId) ? parseInt(courseId[0], 10) : parseInt(courseId, 10),
-                schoolId: parseInt(schoolId, 10)
-            }
-        });
-        res.status(201).json(enrollment);
+        // Verifica se courseId é um array e cria uma matrícula para cada curso
+        const enrollments = await Promise.all(
+            (Array.isArray(courseId) ? courseId : [courseId]).map(async (id) => {
+                return await prisma.enrollment.create({
+                    data: {
+                        userId: parseInt(userId, 10),
+                        courseId: parseInt(id, 10),
+                        schoolId: parseInt(schoolId, 10)
+                    }
+                });
+            })
+        );
+
+        res.status(201).json(enrollments);
     } catch (error) {
         console.error("Erro ao criar matrícula:", error);
         res.status(500).json({ error: "Erro ao criar matrícula" });

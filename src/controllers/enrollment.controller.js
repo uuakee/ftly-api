@@ -6,16 +6,16 @@ const prisma = new PrismaClient();
 
 const createEnrollment = async (req, res) => {
     try {
-    const { userId, courseId, schoolId } = req.body;
+        const { userId, courseId, schoolId } = req.body;
 
-    const enrollment = await prisma.enrollment.create({
-        data: {
-            userId,
-            courseId,
-            schoolId
-        }
-    });
-    res.status(201).json(enrollment);
+        const enrollment = await prisma.enrollment.create({
+            data: {
+                userId: parseInt(userId, 10),
+                courseId: Array.isArray(courseId) ? courseId.map(id => parseInt(id, 10)) : [parseInt(courseId, 10)],
+                schoolId: parseInt(schoolId, 10)
+            }
+        });
+        res.status(201).json(enrollment);
     } catch (error) {
         console.error("Erro ao criar matrícula:", error);
         res.status(500).json({ error: "Erro ao criar matrícula" });

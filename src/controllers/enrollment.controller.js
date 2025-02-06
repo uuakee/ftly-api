@@ -10,7 +10,9 @@ const createEnrollment = async (req, res) => {
 
         const enrollment = await prisma.enrollment.create({
             data: {
-                userId: parseInt(userId, 10),
+                user: {
+                    connect: { id: parseInt(userId, 10) }
+                },
                 schoolId: parseInt(schoolId, 10),
                 courses: {
                     connect: (Array.isArray(courseId) ? courseId : [courseId]).map(id => ({ id: parseInt(id, 10) }))

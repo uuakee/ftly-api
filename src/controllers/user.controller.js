@@ -6,7 +6,7 @@ const bcrypt = require('bcryptjs');
 const prisma = new PrismaClient();
 const createUser = async (req, res) => {
     try {
-        const { name, email, password, phone, passport, name_family, adress, role, birthday } = req.body;
+        const { name, email, password, phone, passport, name_family, adress, role, birthday, level_school, gender } = req.body;
 
         if (!name || !email || !password || !phone || !birthday) {
             return res.status(400).json({ error: "Nome, email, senha, telefone e data de nascimento são obrigatórios" });
@@ -32,6 +32,8 @@ const createUser = async (req, res) => {
                 passport,
                 name_family,
                 adress,
+                gender,
+                level_school: level_school || "FUNDAMENTAL",
                 role: role || "STUDENT" 
             }
         });

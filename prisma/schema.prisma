@@ -9,16 +9,18 @@ datasource db {
 
 // Modelo de usuário
 model User {
-  id          Int       @id @default(autoincrement())
-  name        String
-  email       String    @unique
-  birthday    DateTime?
-  phone       String?
-  passport    String?
-  name_family String?
-  password    String
-  adress      String
-  role        Role      @default(STUDENT)
+  id           Int         @id @default(autoincrement())
+  name         String
+  email        String      @unique
+  birthday     DateTime?
+  phone        String?
+  passport     String?
+  name_family  String?
+  password     String
+  adress       String
+  gender       Gender?
+  level_school LevelSchool @default(FUNDAMENTAL)
+  role         Role        @default(STUDENT)
 
   // Relacionamentos
   enrollments Enrollment[]
@@ -140,4 +142,15 @@ enum PaymentStatus {
   PENDING
   PAID
   CANCELED
+}
+
+enum LevelSchool {
+  FUNDAMENTAL
+  MEDIO
+  SUPERIOR
+}
+
+enum Gender {
+  HOMEM
+  MULHER
 }

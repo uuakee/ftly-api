@@ -159,6 +159,28 @@ const deleteStudent = async (req, res) => {
     }
 }
 
+const updatePassword = async (req, res) => {
+    try {
+        const { password } = req.body;
+        const { id } = req.user; // Supondo que você tenha um middleware que adiciona o usuário ao req
+
+        if (!password) {
+            return res.status(400).json({ error: "Senha é obrigatória" });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const updatedUser = await prisma.user.update({
+            where: { id },
+            data: { password: hashedPassword }
+        });
+
+        res.json({ message: "Senha atualizada com sucesso", user: updatedUser });
+    } catch (error) {
+        console.error("Erro ao atualizar a senha:", error);
+        res.status(500).json({ error: "Erro ao atualizar a senha" });
+    }
+};
 
 module.exports = {
     createUser,
@@ -166,5 +188,6 @@ module.exports = {
     getTeachers,
     editUser,
     createTeacher,
-    deleteStudent
+    deleteStudent,
+    updatePassword
 }

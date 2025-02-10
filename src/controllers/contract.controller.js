@@ -98,10 +98,23 @@ const downloadContract = async (req, res) => {
     }
 };
 
+// Deletar contrato
+const deleteContract = async (req, res) => {
+    try {
+        const { id } = req.params;
+        await prisma.contract.delete({ where: { id: parseInt(id) } });
+        res.status(204).json({ message: "Contrato deletado com sucesso" });
+    } catch (error) {
+        console.error("Erro ao deletar contrato:", error);
+        res.status(500).json({ error: "Erro ao deletar contrato" });
+    }
+};
+
 module.exports = {
     upload,
     createContract,
     getContractsByUser,
     downloadContract,
-    getContracts
+    getContracts,
+    deleteContract
 }; 

@@ -17,4 +17,7 @@ router.get('/', contractController.getContracts);
 // Download do contrato
 router.get('/:id/download', contractController.downloadContract);
 
+// Deletar contrato
+router.delete('/:id', contractController.deleteContract);
+
 module.exports = router; 

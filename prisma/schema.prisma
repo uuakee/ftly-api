@@ -18,6 +18,7 @@ model User {
   name_family  String?
   password     String
   adress       String
+  unit_school  UnitSchool  @default(EUA)
   gender       Gender?
   level_school LevelSchool @default(FUNDAMENTAL)
   role         Role        @default(STUDENT)
@@ -153,4 +154,9 @@ enum LevelSchool {
 enum Gender {
   HOMEM
   MULHER
+}
+
+enum UnitSchool {
+  BRASIL
+  EUA
 }

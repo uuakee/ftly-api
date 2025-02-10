@@ -6,9 +6,9 @@ const bcrypt = require('bcryptjs');
 const prisma = new PrismaClient();
 const createUser = async (req, res) => {
     try {
-        const { name, email, password, phone, passport, name_family, adress, role, birthday, level_school, gender } = req.body;
+        const { name, email, password, phone, passport, name_family, adress, role, birthday, level_school, gender, unit_school } = req.body;
 
-        if (!name || !email || !password || !phone || !birthday) {
+        if (!name || !email || !password || !phone || !birthday || !unit_school) {
             return res.status(400).json({ error: "Nome, email, senha, telefone e data de nascimento são obrigatórios" });
         }
 
@@ -33,6 +33,7 @@ const createUser = async (req, res) => {
                 name_family,
                 adress,
                 gender,
+                unit_school: unit_school || "EUA",
                 level_school: level_school || "FUNDAMENTAL",
                 role: role || "STUDENT" 
             }
@@ -47,7 +48,7 @@ const createUser = async (req, res) => {
 
 const createTeacher = async (req, res) => {
     try {
-        const { name, email, password, adress } = req.body;
+        const { name, email, password, adress, unit_school } = req.body;
 
         if (!name || !email || !password) {
             return res.status(400).json({ error: "Nome, email e senha são obrigatórios" });
@@ -69,6 +70,7 @@ const createTeacher = async (req, res) => {
                 email,
                 password: hashedPassword,
                 adress,
+                unit_school: unit_school || "EUA",
                 role: "TEACHER" 
             }
         });

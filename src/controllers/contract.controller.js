@@ -69,6 +69,16 @@ const getContractsByUser = async (req, res) => {
     }
 };
 
+const getContracts = async (req, res) => {
+    try {
+        const contracts = await prisma.contract.findMany();
+        res.json(contracts);
+    } catch (error) {
+        console.error("Erro ao buscar contratos:", error);
+        res.status(500).json({ error: "Erro ao buscar contratos" });
+    }
+};
+
 const downloadContract = async (req, res) => {
     try {
         const { id } = req.params;
@@ -92,5 +102,6 @@ module.exports = {
     upload,
     createContract,
     getContractsByUser,
-    downloadContract
+    downloadContract,
+    getContracts
 }; 

@@ -11,6 +11,9 @@ router.post('/create',
 // Buscar contratos de um usuário
 router.get('/:userId', contractController.getContractsByUser);
 
+// Buscar todos os contratos
+router.get('/', contractController.getContracts);
+
 // Download do contrato
 router.get('/:id/download', contractController.downloadContract);
 

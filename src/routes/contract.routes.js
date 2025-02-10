@@ -1,0 +1,17 @@
+const express = require('express');
+const router = express.Router();
+const contractController = require('../controllers/contract.controller');
+
+// Criar novo contrato com upload de arquivo
+router.post('/create', 
+    contractController.upload.single('file'), 
+    contractController.createContract
+);
+
+// Buscar contratos de um usuário
+router.get('/:userId', contractController.getContractsByUser);
+
+// Download do contrato
+router.get('/:id/download', contractController.downloadContract);
+
+module.exports = router; 

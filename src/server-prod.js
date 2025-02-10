@@ -6,6 +6,7 @@ const courseRoutes = require('./routes/course.routes');
 const paymentRoutes = require('./routes/payment.routes');
 const userRoutes = require('./routes/user.routes');
 const enrollmentRoutes = require('./routes/enrollment.routes');
+const contractRoutes = require('./routes/contract.routes');
 const app = express();
 
 app.use(cors()); // Permite todas as origens
@@ -17,6 +18,7 @@ app.use('/api/course', courseRoutes)
 app.use('/api/payment', paymentRoutes)
 app.use('/api/user', userRoutes)
 app.use('/api/enrollment', enrollmentRoutes)
+app.use('/api/contract', contractRoutes)
 
 const PORT = 1938;
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));

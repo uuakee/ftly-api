@@ -27,6 +27,7 @@ model User {
   enrollments Enrollment[]
   courses     Course[]     @relation("TeacherCourses")
   Payment     Payment[]
+  contracts   Contract[]
 
   // Campos padrões
   createdAt DateTime @default(now())
@@ -159,4 +160,18 @@ enum Gender {
 enum UnitSchool {
   BRASIL
   EUA
+}
+
+model Contract {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  startDate DateTime
+  endDate   DateTime
+  fileUrl   String // URL do arquivo no storage
+  fileName  String // Nome original do arquivo
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("contracts")
 }

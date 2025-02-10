@@ -191,6 +191,18 @@ const updatePassword = async (req, res) => {
     }
 };
 
+const getUserById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await prisma.user.findUnique({ where: { id: parseInt(id) } });
+        res.json(user);
+    } catch (error) {
+        console.error("Erro ao buscar usuário:", error);
+        res.status(500).json({ error: "Erro ao buscar usuário" });
+    }
+}
+
+
 module.exports = {
     createUser,
     getStudents,
@@ -198,5 +210,6 @@ module.exports = {
     editUser,
     createTeacher,
     deleteStudent,
-    updatePassword
+    updatePassword,
+    getUserById
 }

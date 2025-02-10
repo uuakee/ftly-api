@@ -124,7 +124,7 @@ const getTeachers = async (req, res) => {
 const editUser = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, email, password, adress, role } = req.body;
+        const { name, email, password, adress, unit_school, level_school, gender } = req.body;
 
         const updatedUser = await prisma.user.update({
             where: { id },
@@ -133,7 +133,9 @@ const editUser = async (req, res) => {
                 email,
                 password,
                 adress,
-                role
+                unit_school,
+                level_school,
+                gender
             }
         });
 

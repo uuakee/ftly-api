@@ -124,18 +124,23 @@ const getTeachers = async (req, res) => {
 const editUser = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, email, password, adress, unit_school, level_school, gender } = req.body;
+        const { name, email, phone, adress, birthday, passport, name_family, gender, level_school, unit_school } = req.body;
 
         const updatedUser = await prisma.user.update({
-            where: { id },
+            where: { 
+                id: parseInt(id) // Convertendo o id para número
+            },
             data: {
                 name,
                 email,
-                password,
+                phone,
                 adress,
-                unit_school,
+                birthday: new Date(birthday),
+                passport,
+                name_family,
+                gender,
                 level_school,
-                gender
+                unit_school
             }
         });
 
@@ -144,7 +149,7 @@ const editUser = async (req, res) => {
         console.error("Erro ao editar usuário:", error);
         res.status(500).json({ error: "Erro ao editar usuário" });
     }
-}
+};
 
 const deleteStudent = async (req, res) => {
     try {
